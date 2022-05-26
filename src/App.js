@@ -253,6 +253,72 @@ function increase1(num1)
 increase1(num1);
 console.log(num1);
 
+//In Javascript objects can be dynamically changed to add new properties. This is a very powerful feature.
+//See the dynamically added Property location to the object CircleNewProp below.
+const CircleNewProp = new Circle(10);
+CircleNewProp.location = {x: 1, y: 2};
+console.log(CircleNewProp);
+
+//Properties can be added using bracket notation also. This would be useful when we don't know the name of the property or when property name has special characters in it's name
+const CircleNewProp2 = new Circle(10);
+const propertyName = 'circle location';
+CircleNewProp2[propertyName] = {x: 1, y: 2};
+console.log(CircleNewProp2);
+
+//To delete a property from an object use 'delete'
+delete CircleNewProp.location;
+console.log(CircleNewProp);
+
+delete CircleNewProp2[propertyName];
+console.log(CircleNewProp2);
+
+
+// To enumerate all the properties of the object use for...in loop
+for(let key1 in circleNew)
+{
+  if(typeof circleNew[key1] !== 'function') //To check type of property use 'typeof'
+    console.log(key1);
+}
+
+//To get all the keys in an object use "Object.keys(<object>)" method.
+let keys = Object.keys(circleNew);
+console.log(keys);
+
+//To check if a particular property is in an object use "if...in"
+if('radius' in circleNew)
+  console.log('Circle has a radius property');
+
+//Abstraction in Object-Oriented Javascript - "Hide the details and show only essentials of an objects to outside world".
+//To make a variable or method abstract just don't use "this" keyword to create them, rather declare them as local variables using "let"
+//To access a local variable inside a function we could create getters and setters using "Object.defineProperty() method"
+function CircleAbstraction(radius)
+{
+  console.log('this', this);
+  this.radius = radius;
+  let defaultLocation = {x: 0, y: 0};
+  let innerMethod = function(num){
+    console.log(num);
+  }
+
+  this.draw = function(){
+    innerMethod(90);
+    console.log('draw');
+  }
+
+  Object.defineProperty(this, 'defaultLocation', {
+    get: function() {
+      return defaultLocation;
+    },
+    set: function (value){
+       if(!value.x || !value.y)
+         throw new Error('invalid value');
+         defaultLocation= value;
+    }
+  })
+}
+
+const CircleAbstractionObject = new CircleAbstraction(10);
+CircleAbstractionObject.defaultLocation = 1;
 
 function App() {
   return (
